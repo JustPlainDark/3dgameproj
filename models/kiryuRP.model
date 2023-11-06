@@ -1,7 +1,7 @@
 {
     "model":
     {
-        "model":"models/heihachi/heihachiIdle.obj",
+        "model":"models/kiryu/kiryuRP.obj",
         "texture":"models/textures/metal.png"
     }
 }

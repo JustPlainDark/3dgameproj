@@ -40,6 +40,9 @@ void player_think(Entity *self)
     SDL_GetRelativeMouseState(&mx,&my);
     const Uint8 * keys;
     keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
+    //SDL_Joystick * joystick;
+    //joystick = SDL_JoystickOpen(0);
+
 
     mouse.x = mx;
     mouse.y = my;
@@ -50,6 +53,12 @@ void player_think(Entity *self)
     right.x = w.x;
     right.y = w.y;
 
+    /*
+    if(SDL_JoystickGetButton(joystick, 0) == 1)
+    {
+            slog("Button pressed");
+    }
+    */
     if (keys[SDL_SCANCODE_W])
     {   
         vector3d_add(self->position,self->position,forward);
