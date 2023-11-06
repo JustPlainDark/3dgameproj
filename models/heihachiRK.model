@@ -1,0 +1,7 @@
+{
+    "model":
+    {
+        "model":"models/heihachi/heihachiRK.obj",
+        "texture":"models/textures/metal.png"
+    }
+}

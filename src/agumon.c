@@ -24,6 +24,7 @@ Entity *agumon_new(Vector3D position)
     ent->model = gf3d_model_load("models/kiryu.model");
     ent->think = agumon_think;
     ent->update = agumon_update;
+    ent->health = 100;
     vector3d_copy(ent->position,position);
 
     Box b = gfc_box(position.x, position.y, position.z, 1, 1, 2);
@@ -65,7 +66,7 @@ void agumon_think(Entity *self)
 
     other = entity_get_collision(self);
 
-    if(other != NULL && other->type != ENT_P2)
+    if(other != NULL && other->type == ENT_P2)
     {
             slog("Collision between players occured");
     }
