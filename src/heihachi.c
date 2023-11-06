@@ -23,6 +23,10 @@ Entity *heihachi_new(Vector3D position)
     ent->think = heihachi_think;
     ent->update = heihachi_update;
     vector3d_copy(ent->position,position);
+
+    Box b = gfc_box(position.x, position.y, position.z, 3, 3, 10);
+    ent->bounds = b;
+
     return ent;
 }
 

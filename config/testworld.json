@@ -2,7 +2,7 @@
     "world":
     {
         "model":"models/stage1.model",
-        "position":[0,0,-0.5],
+        "position":[0,0,-0.1],
         "scale":[2,2,1],
         "rotation":[0,0.001,0]
     }

@@ -25,6 +25,10 @@ Entity *agumon_new(Vector3D position)
     ent->think = agumon_think;
     ent->update = agumon_update;
     vector3d_copy(ent->position,position);
+
+    Box b = gfc_box(position.x, position.y, position.z, 3, 3, 10);
+    ent->bounds = b;
+
     return ent;
 }
 
@@ -44,6 +48,7 @@ void agumon_think(Entity *self)
     Vector3D forward = {0};
     Vector3D right = {0};
     Vector2D w;
+    Entity *other;
 
     const Uint8 * keys;
     keys = SDL_GetKeyboardState(NULL);
@@ -54,6 +59,13 @@ void agumon_think(Entity *self)
     w = vector2d_from_angle(self->rotation.z - GFC_HALF_PI);
     right.x = w.x;
     right.y = w.y;
+
+    other = entity_get_collision(self);
+
+    if(other != NULL)
+    {
+            slog("Collision occured");
+    }
 
     if (!self)return;
 
