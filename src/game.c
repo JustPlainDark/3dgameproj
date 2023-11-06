@@ -33,6 +33,7 @@ int main(int argc,char *argv[])
     //float mouseFrame = 0;
     World *w;
     Entity *agu;
+    //Entity *player2;
 
     Matrix4 skyMat;
     Model *sky;
@@ -58,7 +59,7 @@ int main(int argc,char *argv[])
     
     //mouse = gf2d_sprite_load("images/pointer.png",32,32, 16);
     
-    slog("Number of Joysticks detected: %i", SDL_NumJoysticks());
+    //slog("Number of Joysticks detected: %i", SDL_NumJoysticks());  //Trying to figure out if my ps4 controller is actually detected
     agu = agumon_new(vector3d(0 ,0,0));
     if (agu)agu->selected = 1;
     w = world_load("config/testworld.json");

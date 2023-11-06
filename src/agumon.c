@@ -1,5 +1,7 @@
 
 #include "simple_logger.h"
+#include "gfc_types.h"
+#include "gfc_input.h"
 #include "agumon.h"
 
 
@@ -39,20 +41,57 @@ void agumon_update(Entity *self)
 
 void agumon_think(Entity *self)
 {
+    Vector3D forward = {0};
+    Vector3D right = {0};
+    Vector2D w;
+
+    const Uint8 * keys;
+    keys = SDL_GetKeyboardState(NULL);
+
+    w = vector2d_from_angle(self->rotation.z);
+    forward.x = w.x;
+    forward.y = w.y;
+    w = vector2d_from_angle(self->rotation.z - GFC_HALF_PI);
+    right.x = w.x;
+    right.y = w.y;
+
     if (!self)return;
+
+    if (keys[SDL_SCANCODE_T])
+    {
+        vector3d_add(self->position,self->position,forward);
+    }
+    if (keys[SDL_SCANCODE_G])
+    {
+        vector3d_add(self->position,self->position,-forward);
+    }
+    if (keys[SDL_SCANCODE_H])
+    {
+        vector3d_add(self->position,self->position,right);
+    }
+    if (keys[SDL_SCANCODE_F])
+    {
+        vector3d_add(self->position,self->position,-right);
+    }
     switch(self->state)
     {
-        case ES_idle:
-            //look for player
+        case ES_stand:
+            //stand
             break;
-        case ES_hunt:
-            // set move towards player
+        case ES_stBlock:
+            // stand block
             break;
-        case ES_dead:
-            // remove myself from the system
+        case ES_ch:
+            // crouch
+            break;
+        case ES_chBlock:
+            // crouch block
             break;
         case ES_attack:
-            // run through attack animation / deal damage
+            //attack frame
+            break;
+        case ES_knockd:
+            //knocked down
             break;
     }
 }

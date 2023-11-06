@@ -9,10 +9,12 @@
 
 typedef enum
 {
-    ES_idle = 0,
-    ES_hunt,
-    ES_dead,
-    ES_attack
+    ES_stand = 0,
+    ES_stBlock,
+    ES_ch,
+    ES_chBlock,
+    ES_attack,
+    ES_knockd
 }EntityState;
 
 typedef enum
