@@ -14,6 +14,9 @@ typedef struct
 
 static EntityManager entity_manager = {0};
 
+int entity_check_collision(Entity *self, Entity *other);
+Entity *entity_get_collision(Entity *self);
+
 void entity_system_close()
 {
     int i;
@@ -146,6 +149,42 @@ void entity_update_all()
         }
         entity_update(&entity_manager.entity_list[i]);
     }
+}
+
+int entity_check_collision(Entity *self, Entity *other)
+{
+    Box A, B;
+    if((!self) || (!other))
+    {
+        slog("Entity missing for collision");
+        return 0;
+    }
+    gfc_box_cpy(A, self->bounds);
+    gfc_box_cpy(B, self->bounds);
+    vector3d_add(A, A, self->position);
+    vector3d_add(B, B, self->position);
+    return gfc_box_overlap(A, B);
+}
+
+Entity *entity_get_collision(Entity *self)
+{
+    int i;
+
+    if(!self)
+    {
+        slog("You don't exist");
+        return NULL;
+    }
+
+    for(i = 0; i < entity_manager.entity_count; i++)
+    {
+            if(!entity_manager.entity_list[i]._inuse) continue;
+            if(self == &entity_manager.entity_list[i]) continue;
+            if(self->parent == &entity_manager.entity_list[i]) continue;
+            if(entity_check_collision(self, &entity_manager.entity_list[i])) return &entity_manager.entity_list[i];
+    }
+
+    return NULL;
 }
 
 /*eol@eof*/

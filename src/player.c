@@ -2,9 +2,10 @@
 #include "gfc_types.h"
 
 #include "gf3d_camera.h"
+#include "gfc_input.h"
 #include "player.h"
 
-static int thirdPersonMode = 0;
+static int thirdPersonMode = 1;
 void player_think(Entity *self);
 void player_update(Entity *self);
 
@@ -19,13 +20,13 @@ Entity *player_new(Vector3D position)
         return NULL;
     }
     
-    ent->model = gf3d_model_load("models/dino.model");
+    ent->model = gf3d_model_load("models/kiryu.model");
     ent->think = player_think;
     ent->update = player_update;
     vector3d_copy(ent->position,position);
     ent->rotation.x = -GFC_PI;
-    ent->rotation.z = -GFC_HALF_PI;
-    ent->hidden = 1;
+    ent->rotation.z = 0;
+    ent->hidden = 0;
     return ent;
 }
 
@@ -48,6 +49,7 @@ void player_think(Entity *self)
     w = vector2d_from_angle(self->rotation.z - GFC_HALF_PI);
     right.x = w.x;
     right.y = w.y;
+
     if (keys[SDL_SCANCODE_W])
     {   
         vector3d_add(self->position,self->position,forward);

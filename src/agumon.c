@@ -17,7 +17,7 @@ Entity *agumon_new(Vector3D position)
         slog("UGH OHHHH, no agumon for you!");
         return NULL;
     }
-    //ent->selectedColor = gfc_color(0.1,1,0.1,1);
+    ent->selectedColor = gfc_color(0,0,0,1);
     ent->color = gfc_color(1,1,1,1);
     ent->model = gf3d_model_load("models/kiryu.model");
     ent->think = agumon_think;

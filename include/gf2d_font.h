@@ -26,7 +26,7 @@
  *  strings.  For use with unlimited strings mgl will use glib's GString type
  */
 #include <string.h>
-#include <SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "gfc_types.h"
 #include "gfc_text.h"
