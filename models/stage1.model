@@ -1,7 +1,7 @@
 {
     "model":
     {
-        "model":"models/stages/geometric_plane.obj",
+        "model":"models/stages/geometric_floor.obj",
         "texture":"models/stages/grid.png"
     }
 }

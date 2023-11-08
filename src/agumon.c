@@ -24,7 +24,7 @@ Entity *agumon_new(Vector3D position)
     ent->model = gf3d_model_load("models/kiryu.model");
     ent->think = agumon_think;
     ent->update = agumon_update;
-    ent->health = 100;
+    ent->health = 90;
     vector3d_copy(ent->position,position);
 
     Box b = gfc_box(position.x, position.y, position.z, 1, 1, 2);
@@ -66,9 +66,10 @@ void agumon_think(Entity *self)
 
     other = entity_get_collision(self);
 
-    if(other != NULL && other->type == ENT_P2)
+    if(other != NULL && other->type == ENT_P2 && self->state == ES_attack)
     {
             slog("Collision between players occured");
+            other->health-=10;
     }
 
     if (!self)return;
@@ -96,27 +97,31 @@ void agumon_think(Entity *self)
                 slog("Cross");
                 gf3d_model_free(self->model);
                 self->model = gf3d_model_load("models/kiryuRP.model");
-                self->atkCooldown = 100;
+                self->state = ES_attack;
+                self->atkCooldown = 400;
         }
         if(SDL_JoystickGetButton(joystick, 1) == 1)
         {
                 slog("Circle");
                 gf3d_model_free(self->model);
                 self->model = gf3d_model_load("models/kiryuRK.model");
-                self->atkCooldown = 100;
+                self->state = ES_attack;
+                self->atkCooldown = 600;
         }
         if(SDL_JoystickGetButton(joystick, 2) == 1)
         {
                 slog("Triangle");
                 gf3d_model_free(self->model);
                 self->model = gf3d_model_load("models/kiryuLK.model");
-                self->atkCooldown = 100;
+                self->state = ES_attack;
+                self->atkCooldown = 200;
         }
         if(SDL_JoystickGetButton(joystick, 3) == 1)
         {
                 slog("Square");
                 gf3d_model_free(self->model);
                 self->model = gf3d_model_load("models/kiryuLP.model");
+                self->state = ES_attack;
                 self->atkCooldown = 100;
         }
         if(SDL_JoystickGetButton(joystick, 5) == 1)
@@ -124,18 +129,21 @@ void agumon_think(Entity *self)
                 slog("R1");
                 gf3d_model_free(self->model);
                 self->model = gf3d_model_load("models/kiryuForRK.model");
-                self->atkCooldown = 100;
+                self->state = ES_attack;
+                self->atkCooldown = 1000;
         }
     }
-    else if(self->atkCooldown == 50)
+    else if(self->atkCooldown == 75)
     {
         gf3d_model_free(self->model);
         self->model = gf3d_model_load("models/kiryu.model");
+        self->state = ES_attack;
         self->atkCooldown--;
     }
     else
     {
         self->atkCooldown--;
+        self->state = ES_stand;
     }
     switch(self->state)
     {

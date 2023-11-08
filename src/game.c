@@ -107,10 +107,19 @@ int main(int argc,char *argv[])
                 
 
             //2D draws
-                gf2d_draw_rect_filled(gfc_rect(10 ,10,1000,32),gfc_color8(128,128,128,255));
-                gf2d_font_draw_line_tag("Press ALT+F4 to exit",FT_H1,gfc_color(1,1,1,1), vector2d(10,10));
-                
-                gf2d_draw_rect(gfc_rect(10 ,10,1000,32),gfc_color8(255,255,255,255));
+                gf2d_draw_rect_filled(gfc_rect(10 ,10,2350,32),gfc_color8(128,128,128,255));
+
+                char p1_health_buffer[50];
+                int size_of_p1_health = sizeof p1_health_buffer;
+                snprintf(p1_health_buffer, size_of_p1_health, "Player 1 Health: %i", agu->health);
+                gf2d_font_draw_line_tag(p1_health_buffer,FT_H1,gfc_color(1,1,1,1), vector2d(10,10));
+
+                char p2_health_buffer[50];
+                int size_of_p2_health = sizeof p2_health_buffer;
+                snprintf(p2_health_buffer, size_of_p2_health, "Player 2 Health: %i", player2->health);
+                gf2d_font_draw_line_tag(p2_health_buffer,FT_H1,gfc_color(1,1,1,1), vector2d(1000,10));
+
+                gf2d_draw_rect(gfc_rect(10 ,10,2350,32),gfc_color8(255,255,255,255));
                 
                 //gf2d_sprite_draw(mouse,vector2d(mousex,mousey),vector2d(2,2),vector3d(8,8,0),gfc_color(0.3,.9,1,0.9),(Uint32)mouseFrame);
         gf3d_vgraphics_render_end();

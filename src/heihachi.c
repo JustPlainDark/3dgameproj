@@ -95,6 +95,8 @@ void heihachi_think(Entity *self)
         self->atkCooldown--;
     }
 
+
+    if(self->health == 0)entity_free(self);
     /*
     if(self->atkCooldown <= 0)
     {
