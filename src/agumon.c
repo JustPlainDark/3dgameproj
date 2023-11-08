@@ -56,6 +56,7 @@ void agumon_think(Entity *self)
 
     SDL_Joystick *joystick;
     joystick = SDL_JoystickOpen(0);
+    //slog("Axes detected: %i", SDL_JoystickNumAxes(joystick));
 
     w = vector2d_from_angle(self->rotation.z);
     forward.x = w.x;
@@ -74,19 +75,23 @@ void agumon_think(Entity *self)
 
     if (!self)return;
 
-    if (keys[SDL_SCANCODE_T])
+    if(SDL_JoystickGetAxis(joystick, 0) > 32700){
+       slog("axis movement detected");
+    }
+
+    if (keys[SDL_SCANCODE_T] || SDL_JoystickGetAxis(joystick, 1) < -32700)
     {
         vector3d_add(self->position,self->position,forward);
     }
-    if (keys[SDL_SCANCODE_G])
+    if (keys[SDL_SCANCODE_G] || SDL_JoystickGetAxis(joystick, 1) > 32700)
     {
         vector3d_add(self->position,self->position,-forward);
     }
-    if (keys[SDL_SCANCODE_H])
+    if (keys[SDL_SCANCODE_H] || SDL_JoystickGetAxis(joystick, 0) > 32700)
     {
         vector3d_add(self->position,self->position,right);
     }
-    if (keys[SDL_SCANCODE_F])
+    if (keys[SDL_SCANCODE_F] || SDL_JoystickGetAxis(joystick, 0) < -32700)
     {
         vector3d_add(self->position,self->position,-right);
     }
