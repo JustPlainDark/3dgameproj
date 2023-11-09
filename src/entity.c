@@ -160,9 +160,9 @@ int entity_check_collision(Entity *self, Entity *other)
         return 0;
     }
     gfc_box_cpy(A, self->bounds);
-    gfc_box_cpy(B, self->bounds);
+    gfc_box_cpy(B, other->bounds);
     vector3d_add(A, A, self->position);
-    vector3d_add(B, B, self->position);
+    vector3d_add(B, B, other->position);
     return gfc_box_overlap(A, B);
 }
 

@@ -26,6 +26,7 @@ Entity *player_new(Vector3D position)
     vector3d_copy(ent->position,position);
     ent->rotation.x = -GFC_PI;
     ent->rotation.z = 0;
+    ent->type = ENT_PROJ;
     ent->hidden = 0;
     return ent;
 }

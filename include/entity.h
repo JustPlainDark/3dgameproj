@@ -19,10 +19,10 @@ typedef enum
 
 typedef enum
 {
-    ENT_WALL = 0,
+    ENT_PROJ = 0,
     ENT_P1,
     ENT_P2,
-    ENT_PROJ
+    ENT_WALL
 }EntityType;
 
 typedef struct Entity_S

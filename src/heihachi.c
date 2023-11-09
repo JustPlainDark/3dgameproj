@@ -27,7 +27,7 @@ Entity *heihachi_new(Vector3D position)
     ent->state = ES_stand;
     ent->health = 100;
 
-    Box b = gfc_box(position.x, position.y, position.z, 1, 1, 2);
+    Box b = gfc_box(position.x, position.y, position.z, 3, 3, 10);
     ent->bounds = b;
 
     return ent;
@@ -40,6 +40,7 @@ void heihachi_update(Entity *self)
         slog("self pointer not provided");
         return;
     }
+    vector3d_copy(self->bounds, self->position);
     //vector3d_add(self->position,self->position,self->velocity);
     //self->rotation.z += 0.01;
 }
@@ -96,7 +97,10 @@ void heihachi_think(Entity *self)
     }
 
 
-    if(self->health == 0)entity_free(self);
+    if(self->health <= 0)
+    {
+        entity_free(self);
+    }
     /*
     if(self->atkCooldown <= 0)
     {

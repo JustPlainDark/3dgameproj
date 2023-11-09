@@ -1,0 +1,7 @@
+{
+    "model":
+    {
+        "model":"models/stages/wall1.obj",
+        "texture":"models/stages/grid.png"
+    }
+}

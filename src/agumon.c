@@ -9,6 +9,8 @@ void agumon_update(Entity *self);
 
 void agumon_think(Entity *self);
 
+Vector3D lastPos;
+
 Entity *agumon_new(Vector3D position)
 {
     Entity *ent = NULL;
@@ -26,8 +28,9 @@ Entity *agumon_new(Vector3D position)
     ent->update = agumon_update;
     ent->health = 90;
     vector3d_copy(ent->position,position);
+    vector3d_copy(lastPos,ent->position);
 
-    Box b = gfc_box(position.x, position.y, position.z, 1, 1, 2);
+    Box b = gfc_box(position.x, position.y, position.z, 3, 3, 10);
     ent->bounds = b;
 
     return ent;
@@ -40,6 +43,7 @@ void agumon_update(Entity *self)
         slog("self pointer not provided");
         return;
     }
+    vector3d_copy(self->bounds, self->position);
     //vector3d_add(self->position,self->position,self->velocity);
     //self->rotation.z += 0.01;
 }
@@ -57,6 +61,7 @@ void agumon_think(Entity *self)
     SDL_Joystick *joystick;
     joystick = SDL_JoystickOpen(0);
     //slog("Axes detected: %i", SDL_JoystickNumAxes(joystick));
+    //slog("Hats??? detected: %i", SDL_JoystickNumHats(joystick));
 
     w = vector2d_from_angle(self->rotation.z);
     forward.x = w.x;
@@ -67,34 +72,76 @@ void agumon_think(Entity *self)
 
     other = entity_get_collision(self);
 
+    /*
+    if(other != NULL && other->type == ENT_WALL)
+    {
+        slog("You hit a wall");
+        vector3d_copy(self->position, lastPos);
+    }
+    */
+
+    /*
     if(other != NULL && other->type == ENT_P2 && self->state == ES_attack)
     {
             slog("Collision between players occured");
             other->health-=10;
     }
+    */
 
     if (!self)return;
 
-    if(SDL_JoystickGetAxis(joystick, 0) > 32700){
-       slog("axis movement detected");
+    //DPad Up is 1, Down 4, Downforward 6, Forward 2, Upforward is 3, Back is 8, assuming 5 and 7 are backforward and backup
+    /*
+    if(SDL_JoystickGetHat(joystick, 0) == 5)
+    {
+       slog("Direction pressed");
+    }
+    */
+    //vector3d_copy(self->position, lastPos);
+
+    if(self->state == ES_stand)
+    {
+        if (keys[SDL_SCANCODE_T] || SDL_JoystickGetAxis(joystick, 1) < -32700 || SDL_JoystickGetHat(joystick, 0) == 1)
+        {
+            vector3d_add(self->position,self->position,forward);
+        }
+        if (keys[SDL_SCANCODE_G] || SDL_JoystickGetAxis(joystick, 1) > 32700 || SDL_JoystickGetHat(joystick, 0) == 4)
+        {
+            vector3d_add(self->position,self->position,-forward);
+        }
+        if (keys[SDL_SCANCODE_H] || SDL_JoystickGetAxis(joystick, 0) > 32700 || SDL_JoystickGetHat(joystick, 0) == 2)
+        {
+            vector3d_add(self->position,self->position,right);
+        }
+        if (keys[SDL_SCANCODE_F] || SDL_JoystickGetAxis(joystick, 0) < -32700 || SDL_JoystickGetHat(joystick, 0) == 8)
+        {
+            vector3d_add(self->position,self->position,-right);
+        }
+
+        if(self->position.x >= 12)
+        {
+                self->position.x = 11;
+                slog("go back x is 12");
+        }
+        if(self->position.y >= 12)
+        {
+                self->position.y = 11;
+                slog("go back y is 12");
+        }
+        if(self->position.x <= -12)
+        {
+                self->position.x = -11;
+                slog("go back x is -12");
+        }
+        if(self->position.y <= -12)
+        {
+                self->position.y = -11;
+                slog("go back y is -12");
+        }
     }
 
-    if (keys[SDL_SCANCODE_T] || SDL_JoystickGetAxis(joystick, 1) < -32700)
-    {
-        vector3d_add(self->position,self->position,forward);
-    }
-    if (keys[SDL_SCANCODE_G] || SDL_JoystickGetAxis(joystick, 1) > 32700)
-    {
-        vector3d_add(self->position,self->position,-forward);
-    }
-    if (keys[SDL_SCANCODE_H] || SDL_JoystickGetAxis(joystick, 0) > 32700)
-    {
-        vector3d_add(self->position,self->position,right);
-    }
-    if (keys[SDL_SCANCODE_F] || SDL_JoystickGetAxis(joystick, 0) < -32700)
-    {
-        vector3d_add(self->position,self->position,-right);
-    }
+
+
     if(self->atkCooldown <= 0)
     {
         if(SDL_JoystickGetButton(joystick, 0) == 1)
@@ -104,6 +151,15 @@ void agumon_think(Entity *self)
                 self->model = gf3d_model_load("models/kiryuRP.model");
                 self->state = ES_attack;
                 self->atkCooldown = 400;
+                if(other != NULL && other->type == ENT_P2 && self->state == ES_attack)
+                {
+                        slog("Right Punch");
+                        if(other->health < 50)
+                        {
+                            other->health -= other->health;
+                        }
+                        else other->health -= 40;
+                }
         }
         if(SDL_JoystickGetButton(joystick, 1) == 1)
         {
@@ -112,6 +168,15 @@ void agumon_think(Entity *self)
                 self->model = gf3d_model_load("models/kiryuRK.model");
                 self->state = ES_attack;
                 self->atkCooldown = 600;
+                if(other != NULL && other->type == ENT_P2 && self->state == ES_attack)
+                {
+                        slog("Right Kick");
+                        if(other->health < 50)
+                        {
+                            other->health -= other->health;
+                        }
+                        else other->health -= 50;
+                }
         }
         if(SDL_JoystickGetButton(joystick, 2) == 1)
         {
@@ -120,6 +185,15 @@ void agumon_think(Entity *self)
                 self->model = gf3d_model_load("models/kiryuLK.model");
                 self->state = ES_attack;
                 self->atkCooldown = 200;
+                if(other != NULL && other->type == ENT_P2 && self->state == ES_attack)
+                {
+                        slog("Left Kick");
+                        if(other->health < 15)
+                        {
+                            other->health -= other->health;
+                        }
+                        else other->health -= 15;
+                }
         }
         if(SDL_JoystickGetButton(joystick, 3) == 1)
         {
@@ -128,6 +202,15 @@ void agumon_think(Entity *self)
                 self->model = gf3d_model_load("models/kiryuLP.model");
                 self->state = ES_attack;
                 self->atkCooldown = 100;
+                if(other != NULL && other->type == ENT_P2 && self->state == ES_attack)
+                {
+                        slog("Left Punch");
+                        if(other->health < 10)
+                        {
+                            other->health -= other->health;
+                        }
+                        else other->health -= 10;
+                }
         }
         if(SDL_JoystickGetButton(joystick, 5) == 1)
         {
@@ -136,6 +219,14 @@ void agumon_think(Entity *self)
                 self->model = gf3d_model_load("models/kiryuForRK.model");
                 self->state = ES_attack;
                 self->atkCooldown = 1000;
+                if(other != NULL && other->type == ENT_P2 && self->state == ES_attack)
+                {
+                        slog("Forward Right Kick");
+                        if(other->health < 50)
+                        {
+                            other->health -= other->health;
+                        }
+                }
         }
     }
     else if(self->atkCooldown == 75)

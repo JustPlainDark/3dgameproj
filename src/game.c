@@ -21,6 +21,7 @@
 #include "agumon.h"
 #include "heihachi.h"
 #include "player.h"
+#include "wall.h"
 #include "world.h"
 extern int __DEBUG;
 
@@ -35,6 +36,7 @@ int main(int argc,char *argv[])
     World *w;
     Entity *agu;
     Entity *player2;
+    Entity *wall1, *wall2, *wall3, *wall4;
 
     Matrix4 skyMat;
     Model *sky;
@@ -65,6 +67,25 @@ int main(int argc,char *argv[])
     if (agu)agu->selected = 1;
     player2 = heihachi_new(vector3d(0, -4, 0));
     if (player2)player2->selected = 1;
+
+    wall1 = wall_new(vector3d(0, 26, 0));
+    wall1->rotation.z = GFC_HALF_PI;
+    //Box wall1b = gfc_box(wall1->position.x, wall1->position.y + 20, wall1->position.z, 2, 2, 2);
+    //wall1->bounds = wall1b;
+
+    wall2 = wall_new(vector3d(0, 0, 0));
+    wall2->rotation.z = GFC_HALF_PI;
+    //Box wall2b = gfc_box(wall2->position.x, wall2->position.y - 20, wall2->position.z, 2, 2, 2);
+    //wall2->bounds = wall2b;
+
+    wall3 = wall_new(vector3d(26, 0, 0));
+    //Box wall3b = gfc_box(wall3->position.x + 20, wall3->position.y, wall3->position.z, 2, 2, 2);
+    //wall3->bounds = wall3b;
+
+    wall4 = wall_new(vector3d(0, 0, 0));
+    //Box wall4b = gfc_box(wall4->position.x - 20, wall4->position.y, wall4->position.z, 2, 2, 2);
+    //wall4->bounds = wall4b;
+
     w = world_load("config/testworld.json");
     
     SDL_SetRelativeMouseMode(SDL_TRUE);
