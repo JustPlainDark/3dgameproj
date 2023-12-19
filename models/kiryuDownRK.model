@@ -1,0 +1,7 @@
+{
+    "model":
+    {
+        "model":"models/kiryu/kiryuDownRK.obj",
+        "texture":"models/textures/metal.png"
+    }
+}

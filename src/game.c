@@ -21,6 +21,7 @@
 #include "entity.h"
 #include "agumon.h"
 #include "heihachi.h"
+#include "potemkin.h"
 #include "player.h"
 #include "wall.h"
 #include "world.h"
@@ -75,10 +76,13 @@ int main(int argc,char *argv[])
     //mouse = gf2d_sprite_load("images/pointer.png",32,32, 16);
     
     //slog("Number of Joysticks detected: %i", SDL_NumJoysticks());  //Trying to figure out if my ps4 controller is actually detected
-    agu = agumon_new(vector3d(0, 4, 0));
+    agu = heihachi_new(vector3d(0, 4, 0));
+    agu->type = ENT_P1;
     if (agu)agu->selected = 1;
     player2 = heihachi_new(vector3d(0, -4, 0));
+    player2->type = ENT_P2;
     if (player2)player2->selected = 1;
+    player2->rotation.z = GFC_PI;
 
     wall1 = wall_new(vector3d(0, 26, 0));
     wall1->rotation.z = GFC_HALF_PI;
@@ -160,7 +164,7 @@ int main(int argc,char *argv[])
         if (gfc_input_command_down("exit"))done = 1; // exit condition
     }    
     world_delete(w);
-    
+    Mix_FreeMusic(music);
     vkDeviceWaitIdle(gf3d_vgraphics_get_default_logical_device());    
     //cleanup
     slog("gf3d program end");

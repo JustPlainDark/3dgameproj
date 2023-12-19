@@ -1,0 +1,7 @@
+{
+    "model":
+    {
+        "model":"models/kiryu/kiryuBatWind.obj",
+        "texture":"models/textures/metal.png"
+    }
+}

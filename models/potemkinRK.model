@@ -1,0 +1,7 @@
+{
+    "model":
+    {
+        "model":"models/Potemkin/PotemkinRK.obj",
+        "texture":"models/textures/metal.png"
+    }
+}
