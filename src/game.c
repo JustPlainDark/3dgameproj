@@ -4,6 +4,7 @@
 #include "gfc_input.h"
 #include "gfc_vector.h"
 #include "gfc_matrix.h"
+#include "gfc_audio.h"
 
 #include "gf3d_vgraphics.h"
 #include "gf3d_pipeline.h"
@@ -41,6 +42,10 @@ int main(int argc,char *argv[])
     Matrix4 skyMat;
     Model *sky;
 
+    Mix_Music* music;
+
+
+
     for (a = 1; a < argc;a++)
     {
         if (strcmp(argv[a],"--debug") == 0)
@@ -55,7 +60,14 @@ int main(int argc,char *argv[])
     gf3d_vgraphics_init("config/setup.cfg");
     gf2d_font_init("config/font.cfg");
     gf2d_draw_manager_init(1000);
-    
+
+    gfc_audio_init(20, 1, 1, 1, true, true);
+    slog("Audio initialized");
+    music = Mix_LoadMUS("audio/Moonsiders.mp3");
+    slog("Music Loaded");
+    //gfc_sound_play(music, -1, 30.0, -1, -1);
+    Mix_Volume(-1, 10);
+    Mix_PlayMusic(music, -1);
     slog_sync();
     
     entity_system_init(1024);
